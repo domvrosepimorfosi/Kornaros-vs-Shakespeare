@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <title>Κορνάρος vs Σαίξπηρ – Δομημένη Αντιπαράθεση</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      /* ΠΑΛΕΤΑ: Ζεστά, γήινα χρώματα (Αναγέννηση) */
+      --bg: #fdf8f3;
+      --card-bg: #ffffff;
+      
+      /* Χρώματα Ομάδων */
+      --accent-main: #8d6e63;
+      --accent-kornaros: #795548; /* Καφέ/Χάλκινο */
+      --accent-kornaros-soft: #efebe9;
+      --accent-shakespeare: #283593; /* Βαθύ Μπλε */
+      --accent-shakespeare-soft: #e8eaf6;
+
+      --text-main: #3e2723;
+      --text-muted: #6d4c41;
+      --border: #d7ccc8;
+    }
+
+    * { box-sizing: border-box; font-family: "Georgia", "Times New Roman", serif; }
+
+    body {
+      margin: 0;
+      background: radial-gradient(circle at top, #fff3e0 0, #fdf8f3 40%, #efebe9 100%);
+      color: var(--text-main);
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* --- HEADER --- */
+    header {
+      padding: 1rem 1rem 0.5rem;
+      text-align: center;
+      background: rgba(255,255,255,0.6);
+      border-bottom: 1px solid var(--border);
+    }
+    .title-row { display: flex; align-items: center; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+    .site-logo { height: 55px; width: auto; }
+    header h1 { margin: 0; font-size: 1.4rem; color: var(--text-main); text-shadow: 1px 1px 0 rgba(255,255,255,0.8); }
+    header h1 span { display: block; font-size: 1rem; color: var(--accent-shakespeare); margin-top: 0.2rem; font-weight: normal; }
+    header p { margin: 0.3rem 0 0.8rem; color: var(--text-muted); font-style: italic; font-size: 0.9rem; }
+
+    /* --- NAVIGATION --- */
+    .step-indicator { display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap;}
+    .step-dot { width: 10px; height: 10px; border-radius: 50%; background: #d7ccc8; transition: 0.3s; }
+    .step-dot.active { background: var(--accent-shakespeare); transform: scale(1.3); }
+
+    /* --- MAIN LAYOUT --- */
+    main { 
+      max-width: 950px; 
+      margin: 0 auto 2rem; 
+      padding: 0 1rem 2rem; 
+      flex: 1;
+      width: 100%;
+    }
+    
+    .card {
+      background: var(--card-bg); border-radius: 12px; padding: 2rem;
+      box-shadow: 0 8px 24px rgba(62, 39, 35, 0.08); border: 1px solid var(--border); margin-bottom: 1.5rem;
+    }
+    
+    .card.cover-step {
+        padding: 1.5rem;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .step { display: none; }
+    .step.active { display: block; animation: fadeIn 0.6s ease-out; }
+    @keyframes fadeIn { from {opacity: 0; transform: translateY(10px);} to {opacity: 1; transform: translateY(0);} }
+
+    h2 { margin-top: 0; color: var(--accent-kornaros); border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; }
+    h3 { margin-top: 1.5rem; font-size: 1.1rem; color: var(--text-main); }
+
+    /* --- COVER STYLES --- */
+    .cover-container { text-align: center; padding: 0; }
+    .cover-container h1 { margin: 0 0 0.2rem 0; font-size: 1.8rem; }
+    .cover-container h2 { border: none; padding: 0; margin: 0 0 1rem 0; font-size: 1.1rem; color: var(--text-muted); }
+
+    .cover-image-wrapper {
+      margin: 0.5rem auto 1rem auto;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(62, 39, 35, 0.2);
+      border: 4px solid #fff;
+      max-width: 450px;
+      width: 100%;
+    }
+    .cover-img { width: 100%; height: auto; display: block; }
+    .cover-intro {
+      font-size: 1.1rem; color: var(--text-main); font-style: italic; margin-bottom: 1.5rem;
+      font-weight: bold; max-width: 90%; margin-left: auto; margin-right: auto;
+    }
+    .start-btn {
+      font-size: 1.1rem; padding: 0.8rem 2.5rem; background: var(--accent-shakespeare);
+      box-shadow: 0 6px 20px rgba(40, 53, 147, 0.3);
+    }
+    .start-btn:hover { transform: translateY(-3px); background: #1a237e; }
+
+    /* --- TEXT COMPARISON --- */
+    .text-comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1rem; }
+    .poem-box { padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border); font-size: 1rem; }
+    .poem-box.kornaros { background-color: var(--accent-kornaros-soft); border-top: 4px solid var(--accent-kornaros); }
+    .poem-box.shakespeare { background-color: var(--accent-shakespeare-soft); border-top: 4px solid var(--accent-shakespeare); }
+    .poem-text { font-style: italic; white-space: pre-wrap; font-family: "Georgia", serif; margin-top: 1rem; }
+    .meta { font-size: 0.85rem; color: #555; font-family: sans-serif; text-align: center; margin-bottom: 0.5rem; }
+
+    /* --- ARGUMENT CARDS --- */
+    .arg-card { background: #fafafa; border: 1px dashed #bbb; padding: 1rem; margin-top: 0.8rem; border-radius: 8px; }
+    .arg-card-title { font-weight: bold; font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+
+    /* --- TOOLTIP --- */
+    .tooltip { position: relative; cursor: help; border-bottom: 1px dotted var(--accent-shakespeare); }
+    .tooltip:hover::after {
+        content: attr(data-tooltip);
+        position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%);
+        background: #333; color: #fff; padding: 0.5rem; border-radius: 6px;
+        font-size: 0.85rem; width: 250px; text-align: center; z-index: 100;
+        font-weight: normal; box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    /* --- BUTTONS & INPUTS --- */
+    button {
+      background: var(--accent-kornaros); color: white; border: none; padding: 0.6rem 1.2rem;
+      border-radius: 25px; cursor: pointer; font-family: sans-serif; font-weight: bold;
+      transition: transform 0.2s, box-shadow 0.2s; display: inline-flex; align-items: center; gap: 0.5rem;
+    }
+    button:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+    button.secondary { background: #e0e0e0; color: #333; }
+    button.secondary:hover { background: #d5d5d5; }
+    button.small { padding: 0.4rem 0.8rem; font-size: 0.9rem; }
+    .btn-row { display: flex; justify-content: space-between; margin-top: 1.5rem; flex-wrap: wrap; gap: 0.5rem; }
+    textarea, input[type="text"], input[type="number"], input[type="date"] {
+      width: 100%; padding: 0.6rem; border: 1px solid #ccc; border-radius: 6px; margin-top: 0.5rem; font-family: sans-serif;
+    }
+
+    /* --- STUDENT INFO BOX (Step 8) --- */
+    .student-info-box {
+      background: #e8f5e9;
+      border: 1px solid #c8e6c9;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+    }
+    .student-info-box h3 { margin-top: 0; color: #2e7d32; font-size: 1rem; margin-bottom: 1rem; }
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    
+    /* --- TIMER --- */
+    .timer-controls { display: flex; gap: 0.5rem; justify-content: center; align-items: center; margin-bottom: 0.5rem; font-family: sans-serif; }
+    .timer-controls input { width: 60px; text-align: center; padding: 0.4rem; }
+    .timer-display {
+      font-size: 2.5rem; font-weight: bold; text-align: center; color: var(--text-main);
+      font-family: monospace; margin: 0.5rem 0; background: #fff; padding: 0.5rem;
+      border-radius: 8px; border: 1px solid #ddd;
+    }
+
+    /* --- SCENARIOS & RUBRIC --- */
+    details.scenario { margin-top: 1rem; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 1rem; }
+    details.scenario[open] { background: #fffbf7; border-color: var(--accent-kornaros); }
+    summary { cursor: pointer; font-weight: bold; color: var(--accent-shakespeare); }
+    .scenario-desc { margin: 0.5rem 0; font-size: 0.95rem; text-align: justify; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; }
+
+    .phrase-bank { background: #fcfcfc; border: 1px dashed var(--border); padding: 1rem; margin: 1rem 0; display: none; font-family: sans-serif; font-size: 0.9rem; }
+    
+    .rubric-block { background: linear-gradient(to bottom right, #fff, #f7f3f0); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-top: 1rem; }
+    .rubric-row { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 1rem; align-items: center; padding: 0.5rem 0; border-bottom: 1px dashed #ddd; font-family: sans-serif; font-size: 0.95rem; }
+    .rubric-header { font-weight: bold; color: var(--text-main); border-bottom: 2px solid var(--border); }
+    .rubric-input { width: 60px !important; text-align: center; }
+    .rubric-input.kor { background: var(--accent-kornaros-soft); color: var(--accent-kornaros); font-weight: bold; }
+    .rubric-input.shake { background: var(--accent-shakespeare-soft); color: var(--accent-shakespeare); font-weight: bold; }
+
+    /* --- MULTIMEDIA & PADLET --- */
+    .video-container { width: 100%; margin-bottom: 1.5rem; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    video { width: 100%; display: block; }
+    
+    .instagram-container {
+      border: 2px solid #eee; border-radius: 12px; overflow: hidden; height: 600px; width: 100%; margin: 1rem 0;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+    iframe.social-embed { width: 100%; height: 100%; border: none; }
+
+    .padlet-wrapper { margin-top: 1.5rem; display: flex; justify-content: center; }
+
+    .english-task {
+      background: #e3f2fd; border: 1px solid #90caf9; padding: 1.5rem; border-radius: 8px;
+      font-family: sans-serif; margin-bottom: 1.5rem; color: #0d47a1;
+    }
+    .english-task h3 { margin-top: 0; color: #1565c0; display: flex; align-items: center; gap: 0.5rem; }
+
+    .lyrics-box { 
+        background: #f9f9f9; border-left: 4px solid var(--accent-kornaros); 
+        padding: 1rem; font-family: "Georgia", serif; font-style: italic; 
+        white-space: pre-wrap; max-height: 300px; overflow-y: auto; 
+        font-size: 0.95rem; margin-bottom: 1rem;
+    }
+    .analysis-box { background: #fff3e0; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border: 1px solid #ffe0b2; }
+
+    /* --- CHARTS --- */
+    .bar-chart { margin-top: 1rem; }
+    .bar-row { display: flex; align-items: center; margin-bottom: 0.5rem; font-family: sans-serif; font-size: 0.9rem; }
+    .bar-track { flex: 1; height: 12px; background: #eee; border-radius: 6px; margin: 0 10px; overflow: hidden; }
+    .bar-fill { height: 100%; transition: width 0.5s; }
+    .fill-kor { background: var(--accent-kornaros); }
+    .fill-shake { background: var(--accent-shakespeare); }
+
+    /* --- FOOTER --- */
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: rgba(255,255,255,0.6);
+      border-top: 1px solid #eee;
+      font-family: sans-serif;
+      width: 100%;
+    }
+
+    /* --- PRINT STYLES (CLEAN PDF) --- */
+    #print-summary { display: none; font-family: "Times New Roman", serif; color: #000; line-height: 1.5; }
+    #print-summary h1 { text-align: center; font-size: 1.8rem; border-bottom: 2px solid #000; margin-bottom: 1rem; padding-bottom: 0.5rem; }
+    #print-summary h2 { font-size: 1.4rem; margin-top: 2rem; border-bottom: 1px solid #000; color: #000; }
+    #print-summary h3 { font-size: 1.2rem; margin-top: 1rem; color: #333; font-weight: bold; }
+    #print-summary p, #print-summary li { font-size: 12pt; text-align: justify; }
+    #print-summary .print-section { margin-bottom: 2rem; }
+    
+    /* Header styles specifically for print */
+    .print-header-info {
+        border: 1px solid #000;
+        padding: 10px;
+        margin-bottom: 20px;
+        background-color: #f0f0f0;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        font-family: sans-serif;
+        font-size: 11pt;
+    }
+    .print-header-info div { margin: 5px 15px; }
+
+    @media print {
+      body { background: white !important; color: black !important; margin: 0; padding: 0; }
+      header, footer, .no-print, .btn-row, .step-indicator, .timer-controls, .video-container, .instagram-container, .padlet-wrapper, .start-btn, .student-info-box { display: none !important; }
+      main { display: none !important; } 
+      #print-summary { display: block !important; padding: 1cm; } 
+      @page { margin: 2cm; }
+    }
+
+    @media (max-width: 700px) { .text-comparison, .grid-2, .rubric-row, .info-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="title-row">
+    <img src="greek logo.png" alt="Λογότυπο" class="site-logo">
+    <h1>«Θέλω μες τα δύο της μάτια να κοιτάζω»<br><span>Βιτσέντζος Κορνάρος vs William Shakespeare</span></h1>
+  </div>
+  <p>Δομημένη αντιπαράθεση για την εικόνα της γυναίκας στη ζωή και στη λογοτεχνία</p>
+  <div class="step-indicator" id="stepIndicator"></div>
+</header>
+
+<main>
+  <section class="card step cover-step active">
+    <div class="cover-container">
+      <h1 style="color:var(--accent-kornaros);">Κορνάρος vs Σαίξπηρ</h1>
+      <h2>Το Ιδανικό απέναντι στο Πραγματικό</h2>
+      
+      <div class="cover-image-wrapper">
+        <img src="image.png" alt="Αναγεννησιακή σύνθεση με βιβλία και θέα" class="cover-img">
+      </div>
+
+      <p class="cover-intro">
+        Μια διαδραστική περιήγηση στον τρόπο που η λογοτεχνία κοιτάζει τη γυναίκα, 
+        από την Αναγέννηση μέχρι το Instagram.
+      </p>
+
+      <button class="start-btn" data-next>Ξεκινήστε το Ταξίδι ➜</button>
+    </div>
+  </section>
+
+  <section class="card step">
+    <h2>Βήμα 1: Εισαγωγή & Κείμενα</h2>
+    <p>
+      Σε αυτή τη δραστηριότητα θα εξερευνήσουμε δύο εκ διαμέτρου αντίθετους τρόπους με τους οποίους η λογοτεχνία (και κατ' επέκταση η κοινωνία) κοιτάζει τη γυναίκα και τον έρωτα.
+    </p>
+    <p>
+      Από τη μια πλευρά, η <strong>εξιδανικευμένη εικόνα</strong> της Αναγέννησης, όπως εκφράζεται στον <em>Ερωτόκριτο</em>, όπου η γυναίκα είναι ένα πλάσμα αψεγάδιαστο, «ηλιογέννητο», σχεδόν θεϊκό. Αυτή η οπτική εκφράζει την ανάγκη του ανθρώπου για το Υψηλό και το Απόλυτο.
+    </p>
+    <p>
+      Από την άλλη, η <strong>ρεαλιστική, γήινη ματιά</strong> του Σαίξπηρ στο <em>Σονέτο 130</em>, που αποδομεί τα κλισέ της εποχής του. Εδώ, η γυναίκα έχει ατέλειες, «πατάει στη γη», αλλά ακριβώς γι' αυτό η αγάπη για εκείνη είναι πιο αληθινή.
+    </p>
+
+    <div class="text-comparison">
+      <div class="poem-box kornaros">
+        <div class="meta"><strong>Βιτσέντζος Κορνάρος, Ερωτόκριτος (Α' 47-56)</strong><br>Έκδοση: Στυλιανός Αλεξίου</div>
+        <div class="poem-text">Ήτονε η ομορφιά της αμέτρητη, τα κάλλη της περίσσα,
+τ’ άλλα κορίτσια ομπρός εις αυτή, ήσαν σαν κυπαρίσσα.
+
+Όπου 'χε δει όμορφο δεντρό, με τ' άνθη στολισμένο,
+είν' τσ' Αρετούσας το κορμί, τ' ομορφοκαμωμένο.
+
+Όπου 'χε δει τα λούλουδα τα κοκκινοβαμμένα,
+ήλεγε: «Έτσι τα χείλη τση, και τση Κεράς μου εμένα».
+
+Τα μάτια της τα ολόμαυρα, όντεν τα παιχνιδίζει,
+κάνει τη μέρα σκοτεινή, κι όντε γελά φωτίζει.
+
+Το πρόσωπό τση έλαμπε, ωσάν τον ήλιο, κι εχτύπα,
+φεγγάρι το 'λεγαν πολλοί, κι άστρον, καθώς σού είπα.</div>
+      </div>
+
+      <div class="poem-box shakespeare">
+        <div class="meta"><strong>William Shakespeare, Σονέτο 130</strong><br>Μετάφραση: Παναγιώτης Δόμβρος</div>
+        <div class="poem-text">Τα μάτια της δεν μοιάζουν με ηλιαχτίδα
+κι είναι τα χείλη της χλωμά μπρος στου κοραλλιού τη φλόγα.
+Αν το χιόνι είναι λευκό, έχει τα στήθη ωχρά·
+μαύρα, συρμάτινα μαλλιά της στέκουν στο κεφάλι.
+
+Τριαντάφυλλα έχω δει, κόκκινα και λευκά,
+μα τέτοια ρόδα δεν ανθίζουν στα μάγουλά της.
+Σε άλλα αρώματα χαίρομαι πιο γλυκά
+παρά στην ανάσα που απ’ τα χείλη της φυσά.
+
+Χαίρομαι όταν μου μιλά, κι ας ξέρω
+πόσο γλυκύτερη είναι η μουσική.
+Ποτέ μου δεν αντίκρισα θεά να περπατά,
+μα αυτή, όταν βαδίζει, πατάει στη γη.
+
+Κι όμως, στον όρκο του ουρανού, σπανίζει η αγαπημένη,
+όσο καθεμιά που την υμνούν με ψεύτικες συγκρίσεις.</div>
+      </div>
+    </div>
+
+    <div class="btn-row no-print">
+      <button class="secondary" disabled>⟵ Προηγούμενο</button>
+      <button data-next>Έναρξη ➜</button>
+    </div>
+  </section>
+
+  <section class="card step">
+    <h2>Βήμα 2: Αρχική Ψηφοφορία</h2>
+    <p>Πριν ξεκινήσουμε, ποια στάση σας ελκύει περισσότερο αυθόρμητα;</p>
+    <p class="muted">Σηκώστε χέρι και καταγράψτε τα αποτελέσματα.</p>
+
+    <div class="grid-2" style="grid-template-columns:repeat(3, 1fr);">
+      <div>
+        <strong style="color:var(--accent-kornaros);">Υπέρ Κορνάρου (Ιδανικό)</strong>
+        <input type="number" id="pre-kor" min="0" value="0">
+      </div>
+      <div>
+        <strong style="color:var(--accent-shakespeare);">Υπέρ Σαίξπηρ (Ρεαλιστικό)</strong>
+        <input type="number" id="pre-shake" min="0" value="0">
+      </div>
+      <div>
+        <strong>Αβέβαιοι</strong>
+        <input type="number" id="pre-unsure" min="0" value="0">
+      </div>
+    </div>
+
+    <button class="small no-print" onclick="calculatePreVote()">📊 Υπολογισμός & Γράφημα</button>
+
+    <div id="pre-results" style="margin-top:1rem; font-weight:bold;"></div>
+    <div id="pre-chart" class="bar-chart"></div>
+
+    <div class="btn-row no-print">
+      <button class="secondary" data-prev>⟵ Προηγούμενο</button>
+      <button data-next>Επόμενο ➜</button>
+    </div>
+  </section>
+
+  <section class="card step">
+    <h2>Βήμα 3: Ομάδες & Ρόλοι</h2>
+    <p>Χωριζόμαστε σε τρεις ομάδες:</p>
+
+    <div class="grid-2" style="grid-template-columns: 1fr 1fr 1fr;">
+      <div style="background:#efebe9; padding:1rem; border-radius:8px; border-top:3px solid var(--accent-kornaros);">
+        <strong>Ομάδα "Αρετούσα"</strong>
+        <p style="font-size:0.9rem;">Υπερασπίζεστε την Ποίηση και το Ιδανικό. Ο κόσμος είναι σκληρός και πεζός· χρειαζόμαστε την Τέχνη για να μας ανυψώνει.</p>
+      </div>
+      <div style="background:#e8eaf6; padding:1rem; border-radius:8px; border-top:3px solid var(--accent-shakespeare);">
+        <strong class="tooltip" data-tooltip="Η μυστηριώδης μελαχρινή γυναίκα των Σονέτων 127-154. Μια ρεαλιστική φιγούρα με γήινα πάθη και ατέλειες, αντίθετη στα ξανθά, αιθέρια πρότυπα της εποχής.">Ομάδα "Dark Lady"</strong>
+        <p style="font-size:0.9rem;">Υπερασπίζεστε την Αλήθεια. Η πραγματική αγάπη βλέπει τα ελαττώματα και μένει. Τα ψέματα είναι για τους αδύναμους.</p>
+      </div>
+      <div style="background:#f5f5f5; padding:1rem; border-radius:8px; border-top:3px solid #777;">
+        <strong>Κριτές / Παρατηρητές</strong>
+        <p style="font-size:0.9rem;">Παρακολουθείτε το debate, σημειώνετε τα δυνατά επιχειρήματα και αξιολογείτε βάσει της Σχάρας.</p>
+      </div>
+    </div>
+
+    <textarea id="roles-notes" placeholder="Σημειώσεις για τη σύνθεση των ομάδων..." style="min-height:60px;"></textarea>
+
+    <div class="btn-row no-print">
+      <button class="secondary" data-prev>⟵ Προηγούμενο</button>
+      <button data-next>Επιχειρήματα ➜</button>
+    </div>
+  </section>
+
+  <section class="card step">
+    <h2>Βήμα 4: Τράπεζα Επιχειρημάτων</h2>
+    <p>Προετοιμάστε τα επιχειρήματά σας. Πατήστε "Προσθήκη" για να ανοίξετε νέο πεδίο.</p>
+
+    <div class="text-comparison">
+      <div>
+        <h3 style="color:var(--accent-kornaros); margin-top:0;">📜 Ομάδα Κορνάρου</h3>
+        <div id="kornaros-arguments"></div>
+        <button class="small secondary no-print" onclick="addArgumentCard('kornaros')">➕ Προσθήκη Επιχειρήματος</button>
+      </div>
+      <div>
+        <h3 style="color:var(--accent-shakespeare); margin-top:0;">🎭 Ομάδα Σαίξπηρ</h3>
+        <div id="shakespeare-arguments"></div>
+        <button class="small secondary no-print" onclick="addArgumentCard('shakespeare')">➕ Προσθήκη Επιχειρήματος</button>
+      </div>
+    </div>
+
+    <div class="btn-row no-print">
+      <button class="secondary" onclick="printArguments()">🖨️ Αποθήκευση PDF</button>
+      <div style="display:flex; gap:0.5rem;">
+        <button class="secondary" data-prev>⟵ Προηγούμενο</button>
+        <button data-next>Σενάρια ➜</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="card step">
+    <h2>Βήμα 5: Σύγχρονα Διλήμματα</h2>
+    <p>Πώς θα αντιδρούσαν οι ποιητές στο σήμερα; Επιλέξτε σενάρια για συζήτηση.</p>
+
+    <button class="small secondary no-print" onclick="togglePhraseBank()">🗣️ Εμφάνιση/Απόκρυψη Φράσεων Βοήθειας</button>
+    
+    <div id="phrase-bank" class="phrase-bank">
+        <h4>Ιδέες για επιχειρηματολογία:</h4>
+        <ul>
+            <li><strong>Κορνάρος (Ιδανικό):</strong> "Η ομορφιά πρέπει να εμπνέει", "Χρειαζόμαστε πρότυπα", "Η τέχνη διορθώνει τη φύση", "Ο ρομαντισμός δίνει χρώμα στη ζωή".</li>
+            <li><strong>Σαίξπηρ (Ρεαλιστικό):</strong> "Η τελειότητα είναι βαρετή", "Το #NoFilter είναι ελευθερία", "Αγαπώ σημαίνει αποδέχομαι", "Τα πρότυπα προκαλούν άγχος".</li>
+        </ul>
+    </div>
+
+    <details class="scenario" data-kor-id="sc1-kor" data-shake-id="sc1-shake">
+        <summary>📸 Σενάριο 1: Instagram & Filters</summary>
+        <div class="scenario-desc">
+            Μια φωτογραφία ανεβαίνει στα social media. Η κοπέλα έχει χρησιμοποιήσει φίλτρο που λειαίνει το δέρμα και μεγαλώνει τα μάτια.
+            <br><strong>Ερώτημα:</strong> Είναι αυτό "τέχνη" και βελτίωση της εικόνας (όπως θα έλεγε ο Κορνάρος για το "κυπαρίσσι" και τον "ήλιο") ή είναι "ψεύτικη σύγκριση" που κρύβει την αλήθεια (όπως θα έλεγε ο Σαίξπηρ);
+        </div>
+        <div class="grid-2">
+            <textarea id="sc1-kor" placeholder="Άποψη Κορνάρου..."></textarea>
+            <textarea id="sc1-shake" placeholder="Άποψη Σαίξπηρ..."></textarea>
+        </div>
+    </details>
+
+    <details class="scenario" data-kor-id="sc2-kor" data-shake-id="sc2-shake">
+        <summary>💘 Σενάριο 2: Η Ερωτική Εξομολόγηση</summary>
+        <div class="scenario-desc">
+            Ένας νέος θέλει να στείλει μήνυμα στην κοπέλα που του αρέσει.
+            <br><strong>Επιλογή Α:</strong> "Είσαι το φως της ζωής μου, χωρίς εσένα χάνομαι." (Υπερβολή/Πάθος)
+            <br><strong>Επιλογή Β:</strong> "Μου αρέσει πολύ να περνάμε χρόνο μαζί, ακόμα κι όταν τρώμε σουβλάκια στο παγκάκι." (Ρεαλισμός/Οικειότητα)
+            Ποιο έχει μεγαλύτερη αξία;
+        </div>
+        <div class="grid-2">
+            <textarea id="sc2-kor" placeholder="Υπεράσπιση της Επιλογής Α (Κορνάρος)"></textarea>
+            <textarea id="sc2-shake" placeholder="Υπεράσπιση της Επιλογής Β (Σαίξπηρ)"></textarea>
+        </div>
+    </details>
+
+    <details class="scenario" data-kor-id="sc3-kor" data-shake-id="sc3-shake">
+        <summary>🌟 Σενάριο 3: Influencers & "Idols"</summary>
+        <div class="scenario-desc">
+            Οι fans λατρεύουν έναν διάσημο τραγουδιστή/influencer σαν "θεό" ("Idol", "Queen"). Ξαφνικά κυκλοφορεί ένα βίντεο όπου είναι αγενής ή κάνει λάθος σε μια συναυλία.
+            <br><strong>Αντίδραση:</strong> Πρέπει να συντηρούμε τον μύθο του ειδώλου (γιατί μας δίνει χαρά και όνειρα) ή να αποδεχόμαστε ότι είναι απλά ένας άνθρωπος με ελαττώματα;
+        </div>
+        <div class="grid-2">
+            <textarea id="sc3-kor" placeholder="Η ανάγκη για Είδωλα (Κορνάρος)"></textarea>
+            <textarea id="sc3-shake" placeholder="Η αποδοχή της Ανθρώπινης φύσης (Σαίξπηρ)"></textarea>
+        </div>
+    </details>
+
+    <div class="btn-row no-print">
+      <button class="secondary" onclick="printScenarios()">🖨️ Αποθήκευση PDF</button>
+      <div style="display:flex; gap:0.5rem;">
+        <button class="secondary" data-prev>⟵ Προηγούμενο</button>
+        <button data-next>Debate ➜</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="card step">
+    <h2>Βήμα 6: Debate & Αξιολόγηση</h2>
+    
+    <div class="timer-controls no-print">
+        <label>Λεπτά: <input type="number" id="t-min" value="2" min="0"></label>
+        <label>Δευτ: <input type="number" id="t-sec" value="0" min="0" max="59"></label>
+    </div>
+    
+    <div class="timer-display" id="timer-display">02:00</div>
+    
+    <div style="text-align:center; margin-bottom:1.5rem;" class="no-print">
+        <button class="small" onclick="startTimer()">▶ Έναρξη</button>
+        <button class="small secondary" onclick="resetTimer()">⏹ Επαναφορά</button>
+        <select id="speaker-select" style="width:auto; padding:0.4rem; margin-left:10px;">
+            <option>Ομάδα Κορνάρου</option>
+            <option>Ομάδα Σαίξπηρ</option>
+        </select>
+    </div>
+
+    <h3>Σχάρα Αξιολόγησης (Για τους Κριτές)</h3>
+    <p class="muted">Βαθμολογήστε από 1 έως 4.</p>
+
+    <div class="rubric-block">
+        <div class="rubric-row header">
+            <div>Κριτήριο</div>
+            <div style="text-align:center; color:var(--accent-kornaros);">Κορνάρος</div>
+            <div style="text-align:center; color:var(--accent-shakespeare);">Σαίξπηρ</div>
+        </div>
+
+        <div class="rubric-row">
+            <div>1. Χρήση στοιχείων κειμένου (ήλιος, χιόνι κ.λπ.)</div>
+            <div style="text-align:center;"><input type="number" min="1" max="4" id="r-kor-1" class="rubric-input kor"></div>
+            <div style="text-align:center;"><input type="number" min="1" max="4" id="r-shake-1" class="rubric-input shake"></div>
+        </div>
+
+        <div class="rubric-row">
+            <div>2. Σύνδεση με τη σύγχρονη πραγματικότητα</div>
+            <div style="text-align:center;"><input type="number" min="1" max="4" id="r-kor-2" class="rubric-input kor"></div>
+            <div style="text-align:center;"><input type="number" min="1" max="4" id="r-shake-2" class="rubric-input shake"></div>
+        </div>
+
+        <div class="rubric-row">
+            <div>3. Σεβασμός στον αντίλογο</div>
+            <div style="text-align:center;"><input type="number" min="1" max="4" id="r-kor-3" class="rubric-input kor"></div>
+            <div style="text-align:center;"><input type="number" min="1" max="4" id="r-shake-3" class="rubric-input shake"></div>
+        </div>
+
+        <div class="rubric-row">
+            <div>4. Σαφήνεια συμπεράσματος</div>
+            <div style="text-align:center;"><input type="number" min="1" max="4" id="r-kor-4" class="rubric-input kor"></div>
+            <div style="text-align:center;"><input type="number" min="1" max="4" id="r-shake-4" class="rubric-input shake"></div>
+        </div>
+    </div>
+
+    <div style="margin-top:1rem;">
+        <button class="small secondary no-print" onclick="calculateScores()">📏 Υπολογισμός Βαθμολογίας</button>
+        <div id="score-results" style="margin-top:0.5rem; font-weight:bold; font-size:1.1rem;"></div>
+    </div>
+
+    <textarea id="judges-notes" placeholder="Σημειώσεις κριτών..." style="margin-top:1rem;"></textarea>
+
+    <div class="btn-row no-print">
+        <button class="secondary" onclick="printRubric()">🖨️ Αποθήκευση Βαθμολογίας</button>
+        <div style="display:flex; gap:0.5rem;">
+            <button class="secondary" data-prev>⟵ Προηγούμενο</button>
+            <button data-next>Τελική Ψήφος ➜</button>
+        </div>
+    </div>
+  </section>
+
+  <section class="card step">
+    <h2>Βήμα 7: Τελική Ψηφοφορία</h2>
+    <p>Μετά το debate, άλλαξε η γνώμη σας;</p>
+
+    <div class="grid-2" style="grid-template-columns:repeat(3, 1fr);">
+      <div>
+        <strong style="color:var(--accent-kornaros);">Υπέρ Κορνάρου (Μετά)</strong>
+        <input type="number" id="post-kor" min="0" value="0">
+      </div>
+      <div>
+        <strong style="color:var(--accent-shakespeare);">Υπέρ Σαίξπηρ (Μετά)</strong>
+        <input type="number" id="post-shake" min="0" value="0">
+      </div>
+      <div>
+        <strong>Αβέβαιοι (Μετά)</strong>
+        <input type="number" id="post-unsure" min="0" value="0">
+      </div>
+    </div>
+
+    <button class="small no-print" onclick="calculatePostVote()">📊 Σύγκριση Αποτελεσμάτων</button>
+
+    <div id="post-results" style="margin-top:1rem; font-weight:bold;"></div>
+    <div id="post-chart" class="bar-chart"></div>
+
+    <div class="btn-row no-print">
+      <button class="secondary" data-prev>⟵ Προηγούμενο</button>
+      <button data-next>Συμπέρασμα ➜</button>
+    </div>
+  </section>
+
+  <section class="card step">
+    <h2>Βήμα 8: Συλλογικό Συμπέρασμα</h2>
+    <p>Τελικά, τι κρατάμε από αυτή τη σύγκρουση; Χρειαζόμαστε το όνειρο για να ερωτευτούμε, αλλά την αλήθεια για να αγαπήσουμε;</p>
+    
+    <textarea id="class-conclusion" style="min-height:120px;" placeholder="Γράψτε εδώ το τελικό συμπέρασμα της τάξης..."></textarea>
+
+    <div class="student-info-box no-print">
+        <h3>📝 Στοιχεία Αναφοράς (Συμπληρώστε πριν την εκτύπωση)</h3>
+        <div class="info-grid">
+            <label>Όνομα Ομάδας / Μέλη:<input type="text" id="student-team" placeholder="Π.χ. Οι Ρομαντικοί..."></label>
+            <label>Τάξη:<input type="text" id="student-class" placeholder="Π.χ. Β2 Λυκείου"></label>
+            <label>Ημερομηνία:<input type="date" id="student-date"></label>
+        </div>
+    </div>
+
+    <div class="btn-row no-print">
+      <button class="secondary" data-prev>⟵ Προηγούμενο</button>
+      <button data-next>Επόμενο ➜</button>
+    </div>
+  </section>
+
+  <section class="card step">
+    <h2>Βήμα 9: Επέκταση - Η «Μητέρα Θεά» στο Σύγχρονο Τραγούδι</h2>
+    <p>Παρακολουθήστε το βίντεο κλιπ των O.P.A. «Μες στα δυο της μάτια» (feat. Χάρις Αλεξίου) και διαβάστε τους στίχους.</p>
+    
+    <div class="video-container no-print">
+        <video controls>
+            <source src="video.mp4" type="video/mp4">
+            Το πρόγραμμα περιήγησης δεν υποστηρίζει την αναπαραγωγή βίντεο.
+        </video>
+    </div>
+
+    <div class="grid-2">
+        <div>
+            <h3>Στίχοι: Γιώργος Γκικοδήμας | Ερμηνεία: O.P.A. & Χάρις Αλεξίου</h3>
+            <div class="lyrics-box">
+Δύο κόσμους έχει ψυχή μου
+δύση και ανατολή
+δυο καρδιές που ζουν και αγαπάνε
+μέσα σ’ ένα ανάποδο μπιτ.
+
+Μα η αγάπη μου στέκει στην μέση
+σαν μητέρα θεά με τα δυο της παιδιά
+μες την αγκαλιά της όλο κλαίνε και θρηνούν
+πως μια ημέρα θα χαθούν.
+
+Θέλω μες στα δυο της μάτια να κοιτάζω
+μες στα μάτια της...
+
+Μες στα καστανά της τα μάτια
+μία θάλασσα ανοιχτή
+μες στην αγκαλά της ο ήλιος
+να γιατρεύει κάθε πληγή.
+
+Κι από τα μαλλιά της πλεξούδες
+να ζεσταίνουν κάθε διαβάτη
+που `χει ξαποστάσει πάνω στο σταρένιο της κορμί
+κι έχει αποκοιμηθεί.
+            </div>
+        </div>
+        <div>
+            <h3>Ανάλυση: Η Επιβίωση του Ρομαντισμού</h3>
+            <div class="analysis-box">
+                <p><strong>Ερώτημα για συζήτηση:</strong></p>
+                <p>Ο στιχουργός (Γ. Γκικοδήμας) ακολουθεί τον δρόμο του <strong>Κορνάρου</strong> (παρομοιώσεις με τη φύση, ήλιος, θάλασσα, θεά) ή του <strong>Σαίξπηρ</strong> (ρεαλισμός);</p>
+                <p>Εντοπίστε τις μεταφορές που θυμίζουν τον Ερωτόκριτο.</p>
+            </div>
+            <textarea id="music-analysis" placeholder="Γράψτε εδώ τις παρατηρήσεις σας για τη σύνδεση του τραγουδιού με το θέμα μας..."></textarea>
+        </div>
+    </div>
+
+    <div class="btn-row no-print">
+        <button class="secondary" data-prev>⟵ Προηγούμενο</button>
+        <button data-next>Επόμενο ➜</button>
+    </div>
+  </section>
+
+  <section class="card step no-print">
+    <h2>Βήμα 10: Cross-curricular: Shakespeare on the Gram</h2>
+    <p>
+      Time for a digital challenge! Imagine Shakespeare is an Instagram influencer today.
+      He refuses to use fake filters and promotes #RealBeauty.
+    </p>
+
+    <div class="instagram-container">
+      <iframe src="https://domvrosepimorfosi.github.io/sonnet130-comparisons/" class="social-embed"></iframe>
+    </div>
+
+    <div class="english-task">
+      <h3><span style="font-size:1.5rem;">🇬🇧</span> Your Task</h3>
+      <p><strong>1. Analyze:</strong> Look at the Insta-story above. How does Shakespeare describe his love?</p>
+      <p><strong>2. Create:</strong> Make your own post on the Padlet below.</p>
+      <ul>
+        <li>Upload a photo (real, no filters) or write a short caption.</li>
+        <li>Use hashtags like: <strong>#NoFilter, #RealLove, #Sonnet130, #TrueBeauty</strong>.</li>
+        <li>Comment on one classmate's post!</li>
+      </ul>
+    </div>
+
+    <div class="padlet-wrapper">
+      <div class="padlet-embed" style="border:1px solid rgba(0,0,0,0.1);border-radius:2px;box-sizing:border-box;overflow:hidden;position:relative;width:480px;height:352px;max-width:100%">
+        <iframe src="https://padlet.com/padlets/pxg18c0pufuz9b0u/embeds/preview_embed" style="width:100%;height:100%;display:block;padding:0;margin:0" frameborder="0"></iframe>
+      </div>
+    </div>
+
+    <div class="btn-row no-print">
+        <button class="secondary" data-prev>⟵ Προηγούμενο</button>
+        <button onclick="printFinalReport()">🖨️ Τελική Εκτύπωση Όλων (PDF)</button>
+    </div>
+  </section>
+
+</main>
+
+<div id="print-summary"></div>
+
+<footer>
+  ✨✍️ Δημιουργία: Παναγιώτης Δόμβρος, Εκπαιδευτικός Αγγλικών-Θεατρολόγος, Με την Επιφύλαξη Παντός Δικαιώματος ✍️✨
+</footer>
+
+<script>
+  /* --- NAVIGATION --- */
+  const steps = document.querySelectorAll('.step');
+  const indicator = document.getElementById('stepIndicator');
+  let currentStep = 0;
+
+  // Dots creation
+  // We need to subtract 1 because Step 0 (Cover) doesn't need a dot, or we can have it.
+  // Let's map all steps to dots for simplicity.
+  steps.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = `step-dot ${i===0 ? 'active':''}`;
+    indicator.appendChild(dot);
+  });
+  const dots = document.querySelectorAll('.step-dot');
+
+  function showStep(n) {
+    steps.forEach((s, i) => {
+      s.classList.toggle('active', i === n);
+      dots[i].classList.toggle('active', i === n);
+    });
+    currentStep = n;
+    window.scrollTo(0,0);
+  }
+
+  document.querySelectorAll('[data-next]').forEach(btn => {
+    btn.addEventListener('click', () => { if(currentStep < steps.length-1) showStep(currentStep+1); });
+  });
+  document.querySelectorAll('[data-prev]').forEach(btn => {
+    btn.addEventListener('click', () => { if(currentStep > 0) showStep(currentStep-1); });
+  });
+
+  /* --- VOTING LOGIC --- */
+  let preVotes = { k:0, s:0, u:0 };
+
+  function makeBar(label, val, total, colorClass) {
+    const pct = total > 0 ? Math.round((val/total)*100) : 0;
+    return `
+      <div class="bar-row">
+        <span style="width:120px">${label}</span>
+        <div class="bar-track"><div class="bar-fill ${colorClass}" style="width:${pct}%"></div></div>
+        <span>${pct}% (${val})</span>
+      </div>
+    `;
+  }
+
+  function calculatePreVote() {
+    const k = parseInt(document.getElementById('pre-kor').value)||0;
+    const s = parseInt(document.getElementById('pre-shake').value)||0;
+    const u = parseInt(document.getElementById('pre-unsure').value)||0;
+    preVotes = {k, s, u};
+    const total = k+s+u;
+
+    document.getElementById('pre-results').innerText = `Σύνολο: ${total} ψήφοι`;
+    document.getElementById('pre-chart').innerHTML = 
+      makeBar('Κορνάρος', k, total, 'fill-kor') +
+      makeBar('Σαίξπηρ', s, total, 'fill-shake') +
+      makeBar('Αβέβαιοι', u, total, '');
+  }
+
+  function calculatePostVote() {
+    const k = parseInt(document.getElementById('post-kor').value)||0;
+    const s = parseInt(document.getElementById('post-shake').value)||0;
+    const u = parseInt(document.getElementById('post-unsure').value)||0;
+    const total = k+s+u;
+
+    const diffK = k - preVotes.k;
+    const diffS = s - preVotes.s;
+    const signK = diffK >=0 ? '+' : '';
+    const signS = diffS >=0 ? '+' : '';
+
+    document.getElementById('post-results').innerHTML = `
+      Σύνολο: ${total} ψήφοι<br>
+      Κορνάρος: ${k} (${signK}${diffK}) | Σαίξπηρ: ${s} (${signS}${diffS})
+    `;
+    document.getElementById('post-chart').innerHTML = 
+      makeBar('Κορνάρος (Μετά)', k, total, 'fill-kor') +
+      makeBar('Σαίξπηρ (Μετά)', s, total, 'fill-shake') +
+      makeBar('Αβέβαιοι', u, total, '');
+  }
+
+  /* --- DYNAMIC ARGUMENTS --- */
+  function addArgumentCard(type) {
+    const container = document.getElementById(`${type}-arguments`);
+    const div = document.createElement('div');
+    div.className = 'arg-card';
+    div.innerHTML = `
+        <div class="arg-card-title">Νέο Επιχείρημα</div>
+        <textarea placeholder="Διατύπωση επιχειρήματος..."></textarea>
+        <textarea placeholder="Στήριξη από το κείμενο..."></textarea>
+        <textarea placeholder="Σύνδεση με το σήμερα..."></textarea>
+    `;
+    container.appendChild(div);
+  }
+  addArgumentCard('kornaros');
+  addArgumentCard('shakespeare');
+
+  /* --- SCENARIOS --- */
+  function togglePhraseBank() {
+    const bank = document.getElementById('phrase-bank');
+    bank.style.display = bank.style.display === 'block' ? 'none' : 'block';
+  }
+
+  /* --- TIMER --- */
+  let timerId = null;
+  let timeLeft = 0;
+
+  function updateTimer() {
+    const m = Math.floor(timeLeft/60).toString().padStart(2,'0');
+    const s = (timeLeft%60).toString().padStart(2,'0');
+    document.getElementById('timer-display').innerText = `${m}:${s}`;
+  }
+
+  function startTimer() {
+    if(timerId) return;
+    const m = parseInt(document.getElementById('t-min').value)||0;
+    const s = parseInt(document.getElementById('t-sec').value)||0;
+    timeLeft = m*60 + s;
+    
+    updateTimer();
+    
+    timerId = setInterval(() => {
+      if(timeLeft > 0) { timeLeft--; updateTimer(); }
+      else { clearInterval(timerId); timerId=null; alert("Τέλος Χρόνου!"); }
+    }, 1000);
+  }
+  function resetTimer() {
+    clearInterval(timerId); timerId=null; 
+    const m = parseInt(document.getElementById('t-min').value)||2;
+    const s = parseInt(document.getElementById('t-sec').value)||0;
+    timeLeft = m*60 + s;
+    updateTimer();
+  }
+
+  /* --- RUBRIC SCORING --- */
+  function calculateScores() {
+    let scoreK = 0, scoreS = 0;
+    for(let i=1; i<=4; i++) {
+        scoreK += parseInt(document.getElementById(`r-kor-${i}`).value)||0;
+        scoreS += parseInt(document.getElementById(`r-shake-${i}`).value)||0;
+    }
+    const winner = scoreK > scoreS ? "Κορνάρος" : (scoreS > scoreK ? "Σαίξπηρ" : "Ισοπαλία");
+    document.getElementById('score-results').innerHTML = 
+        `Κορνάρος: ${scoreK}/16 &nbsp;|&nbsp; Σαίξπηρ: ${scoreS}/16 <br> Νικητής Βαθμολογίας: ${winner}`;
+  }
+
+  /* --- STUDENT INFO HELPER --- */
+  function getStudentInfoHTML() {
+      const team = document.getElementById('student-team').value || '-';
+      const cls = document.getElementById('student-class').value || '-';
+      const rawDate = document.getElementById('student-date').value;
+      let formattedDate = '-';
+      
+      if(rawDate) {
+          const d = new Date(rawDate);
+          formattedDate = d.toLocaleDateString('el-GR'); // Force DD/MM/YYYY
+      }
+
+      return `
+        <div class="print-header-info">
+            <div><strong>Ομάδα/Μέλη:</strong> ${team}</div>
+            <div><strong>Τάξη:</strong> ${cls}</div>
+            <div><strong>Ημερομηνία:</strong> ${formattedDate}</div>
+        </div>
+      `;
+  }
+
+  /* --- PRINT FUNCTIONS (CLEAN) --- */
+  function printArguments() {
+    const header = getStudentInfoHTML();
+    const kArgs = getArgText('kornaros');
+    const sArgs = getArgText('shakespeare');
+    printContent(`
+        ${header}
+        <h1>Τράπεζα Επιχειρημάτων</h1>
+        <div class="print-section"><h2>Επιχειρήματα Κορνάρου</h2>${kArgs}</div>
+        <div class="print-section"><h2>Επιχειρήματα Σαίξπηρ</h2>${sArgs}</div>
+    `);
+  }
+
+  function getArgText(type) {
+     const container = document.getElementById(`${type}-arguments`);
+     let html = "<ul>";
+     container.querySelectorAll('.arg-card').forEach(card => {
+         const txts = card.querySelectorAll('textarea');
+         if(txts[0].value) {
+             html += `<li><strong>Επιχείρημα:</strong> ${txts[0].value}<br>
+                      - <em>Κείμενο:</em> ${txts[1].value}<br>
+                      - <em>Σήμερα:</em> ${txts[2].value}</li><br>`;
+         }
+     });
+     return html + "</ul>";
+  }
+
+  function printScenarios() {
+    const header = getStudentInfoHTML();
+    let html = `${header}<h1>Σύγχρονα Σενάρια</h1>`;
+    document.querySelectorAll('details.scenario').forEach(sc => {
+        const title = sc.querySelector('summary').innerText;
+        const kTxt = sc.querySelector('textarea[id*="kor"]').value;
+        const sTxt = sc.querySelector('textarea[id*="shake"]').value;
+        if(kTxt || sTxt) {
+            html += `<div class="print-section">
+                <h3>${title}</h3>
+                <p><strong>Κορνάρος:</strong> ${kTxt}</p>
+                <p><strong>Σαίξπηρ:</strong> ${sTxt}</p>
+                <hr style="border:0; border-bottom:1px solid #ccc;">
+            </div>`;
+        }
+    });
+    printContent(html);
+  }
+
+  function printRubric() {
+    calculateScores();
+    const header = getStudentInfoHTML();
+    const res = document.getElementById('score-results').innerHTML;
+    const notes = document.getElementById('judges-notes').value;
+    printContent(`${header}<h1>Αποτελέσματα Αξιολόγησης</h1><p style="font-size:1.2rem; font-weight:bold;">${res}</p><h3>Σημειώσεις Κριτών</h3><p>${notes}</p>`);
+  }
+
+  function printFinalReport() {
+    const header = getStudentInfoHTML();
+    const concl = document.getElementById('class-conclusion').value;
+    const resScore = document.getElementById('score-results').innerHTML;
+    const resVote = document.getElementById('post-results').innerHTML;
+    const preVote = document.getElementById('pre-results').innerText;
+    const musicNotes = document.getElementById('music-analysis').value;
+    
+    let html = `${header}<h1>Τελική Αναφορά: Κορνάρος vs Σαίξπηρ</h1>`;
+    html += `<h2>1. Ψηφοφορία</h2><p><strong>Αρχική:</strong> ${preVote}</p><p><strong>Τελική:</strong> ${resVote}</p>`;
+    html += `<h2>2. Βαθμολογία Debate</h2><p>${resScore}</p>`;
+    html += `<h2>3. Συλλογικό Συμπέρασμα</h2><p>${concl}</p>`;
+    html += `<h2>4. Μουσική Επέκταση (O.P.A.)</h2><p>${musicNotes}</p>`;
+    html += `<h2>5. Κατατεθειμένα Επιχειρήματα</h2><h3>Κορνάρος</h3>${getArgText('kornaros')}<h3>Σαίξπηρ</h3>${getArgText('shakespeare')}`;
+    
+    printContent(html);
+  }
+
+  function printContent(html) {
+    const area = document.getElementById('print-summary');
+    area.innerHTML = html;
+    window.print();
+  }
+</script>
+</body>
+</html>
